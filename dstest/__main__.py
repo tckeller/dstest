@@ -57,7 +57,7 @@ def print_results(results, metrics, table):
     if len(results) == 0:
         return table
     module_name, module_results = results.pop()
-    table.add_row(module_name.replace("experiment_", ""))
+    table.add_row(module_name.replace(".py", ""))
     table = print_experiment_results(list(module_results.items()), metrics, table)
     table = print_results(results, metrics, table)
     return table
@@ -68,7 +68,9 @@ def print_experiment_results(module_results, metrics, table):
         return table
     experiment_name, experiment_results = module_results.pop()
 
-    table.add_row(experiment_name.replace("experiment_", ""), *[str(experiment_results.results[metric]) for metric in metrics])
+    table.add_row(
+        experiment_name.replace("experiment_", ""),
+        *[str(experiment_results.results[metric]) for metric in metrics if metric in experiment_results.results])
     table = print_experiment_results(module_results, metrics, table)
     return table
 
@@ -102,6 +104,7 @@ if __name__ == "__main__":
     else:
         print(f"File {path} does not exist.")
     metrics = list(get_metrics(list(run_results.items())))
+    metrics.sort()
 
     console = Console()
     console.print(f"[bold blue] {'-'*20} DStest {'-'*20} [/bold blue]")
