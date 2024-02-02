@@ -10,7 +10,7 @@ These are the features I currently want to implement
 
 - [ ] Tests
   - [X] Basic scan and execution of tests
-  - [ ] Make it possible to run all tests in directory
+  - [X] Make it possible to run all tests in directory
   - [ ] Make it possible to run individual test in module
 - [ ] Fixtures
   - [X] Basic dependency injection for fixtures

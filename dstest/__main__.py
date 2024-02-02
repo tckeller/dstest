@@ -1,3 +1,5 @@
+import glob
+import os
 import pathlib
 import argparse
 import logging
@@ -97,12 +99,20 @@ if __name__ == "__main__":
     run_results = {}
     if path.is_file():
         if path.suffix == '.py':
-            experiment_functions = parse_experiments_from_file(path)
-            run_results[path.name] = run_experiments(experiment_functions)
+            experiment_files = [path]
         else:
-            print(f"The file {path} is not a Python (.py) file.")
+            raise ValueError(f"The file {path} is not a Python (.py) file.")
+    elif path.is_dir():
+        pattern = os.path.join(path, '*.py')
+        experiment_file_strings = glob.glob(pattern)
+        experiment_files = [pathlib.Path(file) for file in experiment_file_strings]
     else:
-        print(f"File {path} does not exist.")
+        raise ValueError(f"Path or File {path} does not exist.")
+
+    for file in experiment_files:
+        experiment_functions = parse_experiments_from_file(file)
+        run_results[file.name] = run_experiments(experiment_functions)
+
     metrics = list(get_metrics(list(run_results.items())))
     metrics.sort()
 
