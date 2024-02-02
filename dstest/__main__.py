@@ -72,7 +72,7 @@ def print_experiment_results(module_results, metrics, table):
 
     table.add_row(
         experiment_name.replace("experiment_", ""),
-        *[str(experiment_results.results[metric]) for metric in metrics if metric in experiment_results.results])
+        *[str(experiment_results.results[metric]) if metric in experiment_results.results else None for metric in metrics])
     table = print_experiment_results(module_results, metrics, table)
     return table
 
@@ -92,7 +92,8 @@ def get_metrics(results):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='DSTest')
-    parser.add_argument('path', type=str, help='Path to the file or directory to run DSTest on')
+    parser.add_argument("-e", "--experiment", type=str, help='experiment function to run')
+    parser.add_argument("path", type=str, help='Path to the file or directory to run DSTest on')
     args = parser.parse_args()
 
     path = pathlib.Path(args.path)
@@ -111,6 +112,10 @@ if __name__ == "__main__":
 
     for file in experiment_files:
         experiment_functions = parse_experiments_from_file(file)
+        if args.experiment is not None:
+            experiment_functions = [
+                ex_func for ex_func in experiment_functions
+                if ex_func.__name__ in ["experiment_" + args.experiment, args.experiment]]
         run_results[file.name] = run_experiments(experiment_functions)
 
     metrics = list(get_metrics(list(run_results.items())))
