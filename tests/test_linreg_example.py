@@ -4,7 +4,7 @@ import sys
 
 def test_output():
     result = subprocess.run(
-        [sys.executable, "-m", "dstest", 'tests/example_ds_code/linreg_example.py'],
+        [sys.executable, "-m", "dstest", 'tests/linreg_example/linreg_example.py'],
         stdout=subprocess.PIPE,
         text=True,
         encoding='utf-8'
@@ -26,7 +26,7 @@ def test_output():
 
 def test_single_function():
     result = subprocess.run(
-        [sys.executable, "-m", "dstest", 'tests/example_ds_code/linreg_example.py', '-e', '0_poly_fit'],
+        [sys.executable, "-m", "dstest", 'tests/linreg_example/linreg_example.py', '-e', '0_poly_fit'],
         stdout=subprocess.PIPE,
         text=True,
         encoding='utf-8'
@@ -47,7 +47,7 @@ def test_single_function():
 
 def test_output_from_dir():
     result = subprocess.run(
-        [sys.executable, "-m", "dstest", 'tests/example_ds_code'],
+        [sys.executable, "-m", "dstest", 'tests/linreg_example'],
         stdout=subprocess.PIPE,
         text=True,
         encoding='utf-8'

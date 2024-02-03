@@ -11,7 +11,7 @@ from operator import itemgetter
 from rich.console import Console
 from rich.table import Table
 
-from dstest.fixtures import fixture_registry
+from dstest.fixtures import fixture_registry, get_fixture
 from dstest.results import DSResult
 import functools
 
@@ -49,7 +49,7 @@ def run_experiments(experiments: List[Callable]) -> Dict[str, DSResult]:
         return {}
     experiment = experiments.pop()
     arguments = experiment.__code__.co_varnames[:experiment.__code__.co_argcount]
-    experiment_inputs = {arg: fixture_registry[arg]() for arg in arguments}
+    experiment_inputs = {arg: get_fixture(arg) for arg in arguments}
     result = experiment(**experiment_inputs)
     assert isinstance(result, DSResult), f"Function {experiment.__name__} did not return a DSResult!"
     return {**{experiment.__name__: result}, **run_experiments(experiments)}

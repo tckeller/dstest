@@ -1,4 +1,5 @@
 fixture_registry = {}
+fixture_cache = {}
 
 
 def fixture(func):
@@ -7,4 +8,6 @@ def fixture(func):
 
 
 def get_fixture(name):
-    return fixture_registry.get(name)
+    if name not in fixture_cache:
+        fixture_cache[name] = fixture_registry.get(name)()
+    return fixture_cache[name]

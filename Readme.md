@@ -8,13 +8,13 @@ Roadmap
 -------
 These are the features I currently want to implement
 
-- [ ] Tests
+- [X] Tests
   - [X] Basic scan and execution of tests
   - [X] Make it possible to run all tests in directory
-  - [ ] Make it possible to run individual test in module
-- [ ] Fixtures
+  - [X] Make it possible to run individual test in module
+- [X] Fixtures
   - [X] Basic dependency injection for fixtures
-  - [ ] Caching
+  - [X] Caching
 - Experiment Results
   - [ ] Result Registry
   - [ ] Log Metrics
@@ -22,8 +22,8 @@ These are the features I currently want to implement
   - [ ] Log Plots (MPL & Plotly)
 - [ ] Output & Presentation
   - [X] Present Results in console
-  - [ ] Output results into redable file
-  - [ ] Output resutls as Html
+  - [ ] Output results into readable file (Markdown)
+  - [ ] Output results as Html
 - [ ] Advanced Features
   - Pycharm Plugin
 - [ ] Documentation & Examples

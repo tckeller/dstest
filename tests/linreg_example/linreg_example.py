@@ -4,7 +4,6 @@ This file should show how I imagine a data science test should look like
 import numpy.random
 
 from dstest import fixture, DSResult
-import random
 import numpy as np
 
 
@@ -25,7 +24,7 @@ def linear_dummy_data():
     return x, y
 
 
-def experiment_0_poly_fit(linear_dummy_data=linear_dummy_data()):
+def experiment_0_poly_fit(linear_dummy_data):
     x, y = linear_dummy_data
     c = np.polyfit(x, y, 0)
     model = lambda _: c[0]
@@ -33,7 +32,7 @@ def experiment_0_poly_fit(linear_dummy_data=linear_dummy_data()):
     return DSResult(rmse=round(rmse, 3))
 
 
-def experiment_1_poly_fit(linear_dummy_data=linear_dummy_data()):
+def experiment_1_poly_fit(linear_dummy_data):
     x, y = linear_dummy_data
     c = np.polyfit(x, y, 1)
     model = lambda _: c[1] + c[0]*x
