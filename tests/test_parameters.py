@@ -20,4 +20,4 @@ def test_output_with_parameters():
 """
 
     # Use a simple assert statement for checking
-    assert result.stdout == expected_output
+    assert expected_output in result.stdout

@@ -2,6 +2,7 @@ import subprocess
 import sys
 import time
 
+
 def test_output():
 
     start = time.time()

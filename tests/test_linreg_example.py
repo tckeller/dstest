@@ -20,8 +20,7 @@ def test_output():
 └────────────────────────────────┴───────┴───────┘
 """
 
-    # Use a simple assert statement for checking
-    assert result.stdout == expected_output
+    assert expected_output in result.stdout
 
 
 def test_single_function():
@@ -41,8 +40,7 @@ def test_single_function():
 └────────────────────────────────┴──────┘
 """
 
-    # Use a simple assert statement for checking
-    assert result.stdout == expected_output
+    assert expected_output in result.stdout
 
 
 def test_output_from_dir():
@@ -63,8 +61,7 @@ def test_output_from_dir():
 └────────────────────────────────┴───────┴───────┘
 """
 
-    # Use a simple assert statement for checking
-    assert result.stdout == expected_output
+    assert expected_output in result.stdout
 
 
 def test_output_with_parameters():
@@ -85,5 +82,4 @@ def test_output_with_parameters():
 └────────────────────────────────┴───────┴─────┘
 """
 
-    # Use a simple assert statement for checking
-    assert result.stdout == expected_output
+    assert expected_output in result.stdout

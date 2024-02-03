@@ -1,5 +1,4 @@
 from typing import Any, Dict, Optional
-from functools import reduce
 
 
 class DSResult:
