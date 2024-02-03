@@ -21,7 +21,7 @@ These are the features I currently want to implement
   - [X] Log Parameters
   - [ ] Log Plots (MPL & Plotly)
 - [ ] Output & Presentation
-  - [ ] Progress Bar
+  - [X] Progress Bar
   - [X] Present Results in console
   - [ ] Output results into readable file (Markdown)
     - [ ] Parse Docstrings
