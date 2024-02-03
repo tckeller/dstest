@@ -6,14 +6,10 @@ import logging
 import sys
 from importlib.util import module_from_spec, spec_from_file_location
 from typing import Callable, List, Dict
-from operator import itemgetter
 
-from rich.console import Console
-from rich.table import Table
-
-from dstest.fixtures import fixture_registry, get_fixture
-from dstest.results import DSResult
-import functools
+from dstest.fixtures import get_fixture
+from dstest.results import DSResult, registry
+from dstest.output import print_result_cli
 
 logger = logging.getLogger("DSTest")
 logger.setLevel("INFO")
@@ -44,50 +40,16 @@ def parse_experiments_from_file(file: pathlib.Path):
     return experiment_functions
 
 
-def run_experiments(experiments: List[Callable]) -> Dict[str, DSResult]:
+def run_experiments(experiments: List[Callable], module: str) -> Dict[str, DSResult]:
     if len(experiments) == 0:
         return {}
     experiment = experiments.pop()
     arguments = experiment.__code__.co_varnames[:experiment.__code__.co_argcount]
     experiment_inputs = {arg: get_fixture(arg) for arg in arguments}
-    result = experiment(**experiment_inputs)
-    assert isinstance(result, DSResult), f"Function {experiment.__name__} did not return a DSResult!"
-    return {**{experiment.__name__: result}, **run_experiments(experiments)}
 
-
-def print_results(results, metrics, table):
-    if len(results) == 0:
-        return table
-    module_name, module_results = results.pop()
-    table.add_row(module_name.replace(".py", ""))
-    table = print_experiment_results(list(module_results.items()), metrics, table)
-    table = print_results(results, metrics, table)
-    return table
-
-
-def print_experiment_results(module_results, metrics, table):
-    if len(module_results) == 0:
-        return table
-    experiment_name, experiment_results = module_results.pop()
-
-    table.add_row(
-        experiment_name.replace("experiment_", ""),
-        *[str(experiment_results.results[metric]) if metric in experiment_results.results else None for metric in metrics])
-    table = print_experiment_results(module_results, metrics, table)
-    return table
-
-
-def get_metrics(results):
-    if len(results) == 0:
-        return set()
-    result_name, result_value = results.pop()
-    if isinstance(result_value, dict):
-        metrics = get_metrics(list(result_value.items()))
-    elif isinstance(result_value, DSResult):
-        metrics = result_value.get_metrics()
-    else:
-        metrics = set()
-    return metrics.union(get_metrics(results))
+    with registry.start_experiment(experiment.__name__, module_name=module):
+        experiment(**experiment_inputs)
+    run_experiments(experiments, module)
 
 
 if __name__ == "__main__":
@@ -97,7 +59,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     path = pathlib.Path(args.path)
-    run_results = {}
     if path.is_file():
         if path.suffix == '.py':
             experiment_files = [path]
@@ -117,19 +78,9 @@ if __name__ == "__main__":
                 ex_func for ex_func in experiment_functions
                 if ex_func.__name__ in ["experiment_" + args.experiment, args.experiment]]
         if len(experiment_functions) > 0:
-            run_results[file.name] = run_experiments(experiment_functions)
+            run_experiments(experiment_functions, module=file.name)
 
-    metrics = list(get_metrics(list(run_results.items())))
-    metrics.sort()
+    print_result_cli()
 
-    console = Console()
-    console.print(f"[bold blue] {'-'*20} DStest {'-'*20} [/bold blue]")
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Experiment", style="dim", width=30)
-    for metric in metrics:
-        table.add_column(metric)
-    table = print_results(list(run_results.items()), metrics, table)
-
-    console.print(table)
 
 

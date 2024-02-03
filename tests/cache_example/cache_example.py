@@ -1,7 +1,4 @@
-
-import numpy.random
-from dstest import fixture, DSResult
-import numpy as np
+from dstest import fixture, registry
 import time
 
 
@@ -11,8 +8,8 @@ def wait_2_seconds():
 
 
 def experiment_cache_1(wait_2_seconds):
-    return DSResult(x=1)
+    registry.log_metrics(x=1)
 
 
 def experiment_cache_2(wait_2_seconds):
-    return DSResult(x=1)
+    registry.log_metrics(x=1)

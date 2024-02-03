@@ -3,7 +3,7 @@ This file should show how I imagine a data science test should look like
 """
 import numpy.random
 
-from dstest import fixture, DSResult
+from dstest import fixture, registry
 import numpy as np
 
 
@@ -29,7 +29,7 @@ def experiment_0_poly_fit(linear_dummy_data):
     c = np.polyfit(x, y, 0)
     model = lambda _: c[0]
     rmse = calculate_rmse(model(x), y)
-    return DSResult(rmse=round(rmse, 3))
+    registry.log_metric("rmse", round(rmse, 3))
 
 
 def experiment_1_poly_fit(linear_dummy_data):
@@ -38,4 +38,4 @@ def experiment_1_poly_fit(linear_dummy_data):
     model = lambda _: c[1] + c[0]*x
     rmse = calculate_rmse(model(x), y)
     mae = calculate_mae(model(x), y)
-    return DSResult(rmse=round(rmse, 3), mae=round(mae, 3))
+    registry.log_metrics(rmse=round(rmse, 3), mae=round(mae, 3))

@@ -1,11 +1,101 @@
-class DSResult():
+from typing import Any, Dict, Optional
+from functools import reduce
+
+
+class DSResult:
     """ This class holds the result """
-    def __init__(self, experiment_name=None, **kwargs):
-        self.results = kwargs
+    def __init__(self, module_name: str = "", experiment_name: str=None):
+        self.parameters = {}
+        self.metrics = {}
+        self.figures = {}
+        self.module_name = module_name
         self.experiment_name = experiment_name
 
     def __repr__(self):
-        return str(self.results)
+        return str(self.parameters)
 
-    def get_metrics(self):
-        return set(self.results.keys())
+    def log_metric(self, name: str, value: Any):
+        self.metrics[name] = value
+
+    def log_metrics(self, **metrics: Dict[str, Any]):
+        self.metrics = {**self.metrics, **metrics}
+
+    def log_parameter(self, name: str, value: Any):
+        self.parameters[name] = value
+
+    def log_parameters(self, **parameters: Dict[str, Any]):
+        self.parameters = {**self.parameters, **parameters}
+
+    def log_figure(self, name: str, value: Any):
+        self.figures[name] = value
+
+    def log_figures(self, **figures: Dict[str, Any]):
+        self.figures = {**self.figures, **figures}
+
+    def metric_names(self):
+        return set(self.metrics.keys())
+
+
+class ResultRegistry:
+    _instance: Optional["ResultRegistry"] = None
+    _current_experiment: Optional[DSResult] = None
+    experiment_results = []
+
+    def __new__(cls):
+        """ The ResultRegistry is a Singleton """
+        if cls._instance is None:
+            cls._instance = super(ResultRegistry, cls).__new__(cls)
+        return cls._instance
+
+    def start_experiment(self, experiment_name: str, module_name: str = ""):
+        self._current_experiment: DSResult = DSResult(experiment_name=experiment_name, module_name=module_name)
+        return self
+
+    def end_experiment(self):
+        self.experiment_results.append(self._current_experiment)
+        self._current_experiment = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.end_experiment()
+
+    @staticmethod
+    def check_experiment_set(func):
+        def wrapper(self, *args, **kwargs):
+            if self._current_experiment is None:
+                raise AttributeError("No experiment currently started! use registry.start_experiment!")
+            return func(self, *args, **kwargs)
+        return wrapper
+
+    @check_experiment_set
+    def log_metric(self, name, value):
+        self._current_experiment.log_metric(name, value)
+
+    @check_experiment_set
+    def log_metrics(self, **metrics):
+        self._current_experiment.log_metrics(**metrics)
+
+    @check_experiment_set
+    def log_parameter(self, name, value):
+        self._current_experiment.log_parameter(name, value)
+
+    @check_experiment_set
+    def log_parameters(self, **parameters):
+        self._current_experiment.log_parameters(**parameters)
+
+    @check_experiment_set
+    def log_figure(self, name, value):
+        self._current_experiment.log_figure(name, value)
+
+    @check_experiment_set
+    def log_figures(self, **figures):
+        self._current_experiment.log_figures(**figures)
+
+    def all_metric_names(self):
+        return set().union(*[result.metric_names() for result in self.experiment_results])
+
+
+registry = ResultRegistry()
+

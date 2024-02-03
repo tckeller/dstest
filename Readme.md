@@ -16,14 +16,16 @@ These are the features I currently want to implement
   - [X] Basic dependency injection for fixtures
   - [X] Caching
 - Experiment Results
-  - [ ] Result Registry
-  - [ ] Log Metrics
+  - [X] Result Registry
+  - [X] Log Metrics
   - [ ] Log Parameters
   - [ ] Log Plots (MPL & Plotly)
 - [ ] Output & Presentation
   - [X] Present Results in console
   - [ ] Output results into readable file (Markdown)
+    - [ ] Parse Docstrings
+    - [ ] Parse Code
   - [ ] Output results as Html
 - [ ] Advanced Features
-  - Pycharm Plugin
+  - [ ] Pycharm Plugin
 - [ ] Documentation & Examples
