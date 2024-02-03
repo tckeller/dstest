@@ -104,8 +104,8 @@ if __name__ == "__main__":
         else:
             raise ValueError(f"The file {path} is not a Python (.py) file.")
     elif path.is_dir():
-        pattern = os.path.join(path, '*.py')
-        experiment_file_strings = glob.glob(pattern)
+        pattern = os.path.join(path, '**', '*.py')
+        experiment_file_strings = glob.glob(pattern, recursive=True)
         experiment_files = [pathlib.Path(file) for file in experiment_file_strings]
     else:
         raise ValueError(f"Path or File {path} does not exist.")
@@ -116,7 +116,8 @@ if __name__ == "__main__":
             experiment_functions = [
                 ex_func for ex_func in experiment_functions
                 if ex_func.__name__ in ["experiment_" + args.experiment, args.experiment]]
-        run_results[file.name] = run_experiments(experiment_functions)
+        if len(experiment_functions) > 0:
+            run_results[file.name] = run_experiments(experiment_functions)
 
     metrics = list(get_metrics(list(run_results.items())))
     metrics.sort()
