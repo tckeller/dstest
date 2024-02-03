@@ -9,7 +9,7 @@ def test_output_with_parameters():
         encoding='utf-8'
     )
 
-    expected_output = """ -------------------- DStest -------------------- 
+    expected_output = """ -------------------- DStest Results from 2 Experiments -------------------- 
 ┌────────────────────────────────┬───────┬───────┐
 │ Experiment                     │ mae   │ rmse  │
 ├────────────────────────────────┼───────┼───────┤

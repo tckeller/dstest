@@ -6,7 +6,7 @@ def test_output():
 
     start = time.time()
     result = subprocess.run(
-        [sys.executable, "-m", "dstest", 'tests/cache_example/cache_example.py'],
+        [sys.executable, "-m", "dstest", 'tests/examples/cache_example.py'],
         stdout=subprocess.PIPE,
         text=True,
         encoding='utf-8'

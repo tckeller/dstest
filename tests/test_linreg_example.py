@@ -10,7 +10,7 @@ def test_output():
         encoding='utf-8'
     )
 
-    expected_output = """ -------------------- DStest -------------------- 
+    expected_output = """ -------------------- DStest Results from 2 Experiments -------------------- 
 ┌────────────────────────────────┬───────┬───────┐
 │ Experiment                     │ mae   │ rmse  │
 ├────────────────────────────────┼───────┼───────┤
@@ -32,7 +32,7 @@ def test_single_function():
         encoding='utf-8'
     )
 
-    expected_output = """ -------------------- DStest -------------------- 
+    expected_output = """ -------------------- DStest Results from 1 Experiments -------------------- 
 ┌────────────────────────────────┬──────┐
 │ Experiment                     │ rmse │
 ├────────────────────────────────┼──────┤
@@ -53,7 +53,7 @@ def test_output_from_dir():
         encoding='utf-8'
     )
 
-    expected_output = """ -------------------- DStest -------------------- 
+    expected_output = """ -------------------- DStest Results from 2 Experiments -------------------- 
 ┌────────────────────────────────┬───────┬───────┐
 │ Experiment                     │ mae   │ rmse  │
 ├────────────────────────────────┼───────┼───────┤
@@ -75,7 +75,7 @@ def test_output_with_parameters():
         encoding='utf-8'
     )
 
-    expected_output = """ -------------------- DStest -------------------- 
+    expected_output = """ -------------------- DStest Results from 2 Experiments -------------------- 
 ┌────────────────────────────────┬───────┬─────┐
 │ Experiment                     │ depth │ mae │
 ├────────────────────────────────┼───────┼─────┤

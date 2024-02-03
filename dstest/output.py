@@ -34,7 +34,7 @@ def print_result_cli():
     parameters.sort()
 
     console = Console()
-    console.print(f"[bold blue] {'-'*20} DStest {'-'*20} [/bold blue]")
+    console.print(f"[bold blue] {'-'*20} DStest Results from {len(registry.experiment_results)} Experiments {'-'*20} [/bold blue]")
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Experiment", style="dim", width=30)
 
