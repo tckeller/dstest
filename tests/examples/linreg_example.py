@@ -29,7 +29,7 @@ def experiment_0_poly_fit(linear_dummy_data):
     c = np.polyfit(x, y, 0)
     model = lambda _: c[0]
     rmse = calculate_rmse(model(x), y)
-    registry.log_metric("rmse", round(rmse, 3))
+    registry.log_metrics(rmse=round(rmse, 3))
 
 
 def experiment_1_poly_fit(linear_dummy_data):

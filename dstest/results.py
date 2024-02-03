@@ -14,26 +14,20 @@ class DSResult:
     def __repr__(self):
         return str(self.parameters)
 
-    def log_metric(self, name: str, value: Any):
-        self.metrics[name] = value
-
     def log_metrics(self, **metrics: Dict[str, Any]):
         self.metrics = {**self.metrics, **metrics}
 
-    def log_parameter(self, name: str, value: Any):
-        self.parameters[name] = value
-
     def log_parameters(self, **parameters: Dict[str, Any]):
         self.parameters = {**self.parameters, **parameters}
-
-    def log_figure(self, name: str, value: Any):
-        self.figures[name] = value
 
     def log_figures(self, **figures: Dict[str, Any]):
         self.figures = {**self.figures, **figures}
 
     def metric_names(self):
         return set(self.metrics.keys())
+
+    def parameter_names(self):
+        return set(self.parameters.keys())
 
 
 class ResultRegistry:
@@ -70,24 +64,12 @@ class ResultRegistry:
         return wrapper
 
     @check_experiment_set
-    def log_metric(self, name, value):
-        self._current_experiment.log_metric(name, value)
-
-    @check_experiment_set
     def log_metrics(self, **metrics):
         self._current_experiment.log_metrics(**metrics)
 
     @check_experiment_set
-    def log_parameter(self, name, value):
-        self._current_experiment.log_parameter(name, value)
-
-    @check_experiment_set
     def log_parameters(self, **parameters):
         self._current_experiment.log_parameters(**parameters)
-
-    @check_experiment_set
-    def log_figure(self, name, value):
-        self._current_experiment.log_figure(name, value)
 
     @check_experiment_set
     def log_figures(self, **figures):
@@ -96,6 +78,8 @@ class ResultRegistry:
     def all_metric_names(self):
         return set().union(*[result.metric_names() for result in self.experiment_results])
 
+    def all_parameter_names(self):
+        return set().union(*[result.parameter_names() for result in self.experiment_results])
+
 
 registry = ResultRegistry()
-

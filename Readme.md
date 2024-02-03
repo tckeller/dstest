@@ -18,7 +18,7 @@ These are the features I currently want to implement
 - Experiment Results
   - [X] Result Registry
   - [X] Log Metrics
-  - [ ] Log Parameters
+  - [X] Log Parameters
   - [ ] Log Plots (MPL & Plotly)
 - [ ] Output & Presentation
   - [X] Present Results in console
