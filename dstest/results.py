@@ -7,7 +7,7 @@ class DSResult:
         self.parameters = {}
         self.metrics = {}
         self.figures = {}
-        self.docstring = docstring
+        self.docstring = docstring if docstring is not None else ""
         self.module_name = module_name
         self.experiment_name = experiment_name
 

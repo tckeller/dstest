@@ -25,6 +25,22 @@ def linear_dummy_data():
 
 
 def experiment_0_poly_fit(linear_dummy_data):
+    """
+    This experiment is fitting a flat line to the dummy data.
+
+        x = 1
+
+    **this is some bold text** _this is some italic text_
+
+    ## Header
+
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+    magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+    consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+    sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+    no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    """
     x, y = linear_dummy_data
     c = np.polyfit(x, y, 0)
     model = lambda _: c[0]
@@ -33,6 +49,9 @@ def experiment_0_poly_fit(linear_dummy_data):
 
 
 def experiment_1_poly_fit(linear_dummy_data):
+    """
+    This experiment is fitting a linear regression to the dummy data.
+    """
     x, y = linear_dummy_data
     c = np.polyfit(x, y, 1)
     model = lambda _: c[1] + c[0]*x
