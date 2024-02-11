@@ -14,8 +14,8 @@ def test_output_with_parameters():
 │ Experiment                     │ mae   │ rmse  │
 ├────────────────────────────────┼───────┼───────┤
 │ linreg_example                 │       │       │
-│ 0_poly_fit                     │       │ 3.04  │
-│ 1_poly_fit                     │ 0.025 │ 0.287 │
+│     0_poly_fit                 │       │ 3.04  │
+│     1_poly_fit                 │ 0.025 │ 0.287 │
 └────────────────────────────────┴───────┴───────┘
 """
 

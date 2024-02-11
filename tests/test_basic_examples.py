@@ -1,5 +1,7 @@
 import subprocess
 import sys
+import tempfile
+from pathlib import WindowsPath
 
 
 def test_output():
@@ -15,8 +17,8 @@ def test_output():
 │ Experiment                     │ mae   │ rmse  │
 ├────────────────────────────────┼───────┼───────┤
 │ linreg_example                 │       │       │
-│ 0_poly_fit                     │       │ 3.04  │
-│ 1_poly_fit                     │ 0.025 │ 0.287 │
+│     0_poly_fit                 │       │ 3.04  │
+│     1_poly_fit                 │ 0.025 │ 0.287 │
 └────────────────────────────────┴───────┴───────┘
 """
 
@@ -36,7 +38,7 @@ def test_single_function():
 │ Experiment                     │ rmse │
 ├────────────────────────────────┼──────┤
 │ linreg_example                 │      │
-│ 0_poly_fit                     │ 3.04 │
+│     0_poly_fit                 │ 3.04 │
 └────────────────────────────────┴──────┘
 """
 
@@ -56,8 +58,8 @@ def test_output_from_dir():
 │ Experiment                     │ mae   │ rmse  │
 ├────────────────────────────────┼───────┼───────┤
 │ directory_example              │       │       │
-│ 0_poly_fit                     │       │ 3.04  │
-│ 1_poly_fit                     │ 0.025 │ 0.287 │
+│     0_poly_fit                 │       │ 3.04  │
+│     1_poly_fit                 │ 0.025 │ 0.287 │
 └────────────────────────────────┴───────┴───────┘
 """
 
@@ -77,9 +79,29 @@ def test_output_with_parameters():
 │ Experiment                     │ depth │ mae │
 ├────────────────────────────────┼───────┼─────┤
 │ parameter_example              │       │     │
-│ 0_poly_fit                     │ 6     │ 1.2 │
-│ 1_poly_fit                     │ 12    │ 1.4 │
+│     0_poly_fit                 │ 6     │ 1.2 │
+│     1_poly_fit                 │ 12    │ 1.4 │
 └────────────────────────────────┴───────┴─────┘
 """
 
     assert expected_output in result.stdout
+
+
+def test_outfile(tmp_path: WindowsPath):
+    output_file = tmp_path / "output_file.csv"
+
+    subprocess.run(
+        [sys.executable, "-m", "dstest", "-o", output_file, "tests/examples/parameter_example.py"],
+        stdout=subprocess.PIPE,
+        text=True,
+        encoding='utf-8'
+    )
+
+    with open(output_file, "r") as output_file:
+        lines = output_file.readlines()
+
+    assert lines == [
+        "experiment,depth,mae\n",
+        "parameter_example.0_poly_fit,6,1.2\n",
+        "parameter_example.1_poly_fit,12,1.4\n",
+    ]

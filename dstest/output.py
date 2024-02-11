@@ -1,3 +1,4 @@
+import csv
 from typing import List
 
 from rich.console import Console
@@ -7,19 +8,18 @@ from rich.table import Table
 from dstest.results import DSResult, registry
 
 
-def print_registry_cli(experiment_results: List[DSResult], metrics: List[str], parameters: List[str], table: Table):
-    sort_results_by_module = sorted(experiment_results, key=lambda x: (x.module_name, x.experiment_name))
+def append_results_to_table(metrics: List[str], parameters: List[str], table: Table):
     blue_style = Style(color="turquoise2")
 
     current_module = None
-    for result in sort_results_by_module:
+    for result in registry.experiment_results:
         if result.module_name != current_module:
             table.add_row(result.module_name.replace(".py", ""), style=blue_style)
             current_module = result.module_name
 
         table.add_row(
-            result.experiment_name.replace("experiment_", ""),
-            *map(lambda m: str(result.parameters.get(m, "")), parameters),
+            "    " + result.experiment_name.replace("experiment_", ""),
+            *map(lambda p: str(result.parameters.get(p, "")), parameters),
             *map(lambda m: str(result.metrics.get(m, "")), metrics),
         )
 
@@ -27,11 +27,8 @@ def print_registry_cli(experiment_results: List[DSResult], metrics: List[str], p
 
 
 def print_result_cli():
-    metrics = list(registry.all_metric_names())
-    metrics.sort()
-
-    parameters = list(registry.all_parameter_names())
-    parameters.sort()
+    metrics = sorted(registry.all_metric_names())
+    parameters = sorted(registry.all_parameter_names())
 
     console = Console()
     console.print(f"[bold blue] {'-'*20} DStest Results from {len(registry.experiment_results)} Experiments {'-'*20} [/bold blue]")
@@ -41,7 +38,24 @@ def print_result_cli():
     [table.add_column(parameter) for parameter in parameters]
     [table.add_column(metric) for metric in metrics]
 
-    table = print_registry_cli(registry.experiment_results, metrics, parameters, table)
+    table = append_results_to_table(metrics, parameters, table)
 
     console.print(table)
 
+
+def print_result_file(file_path: str):
+    metrics = sorted(registry.all_metric_names())
+    parameters = sorted(registry.all_parameter_names())
+
+    with open(file_path, 'w', newline='') as csvfile:
+        csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        csv_writer.writerow(["experiment"] + parameters + metrics)
+
+        for result in registry.experiment_results:
+            module = result.module_name.replace(".py", "")
+
+            csv_writer.writerow([
+                module + "." + result.experiment_name.replace("experiment_", ""),
+                *map(lambda p: str(result.parameters.get(p, "")), parameters),
+                *map(lambda m: str(result.metrics.get(m, "")), metrics),
+            ])

@@ -10,7 +10,7 @@ from rich.progress import Progress, TaskID
 
 from dstest.fixtures import get_fixture
 from dstest.results import DSResult, registry
-from dstest.output import print_result_cli
+from dstest.output import print_result_cli, print_result_file
 
 
 def import_pyfile_as_module(file_path: pathlib.Path):
@@ -94,11 +94,12 @@ def run_modules(experiment_files: List[pathlib.Path]):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='DSTest')
     parser.add_argument("-e", "--experiment", type=str, help='experiment function to run')
+    parser.add_argument("-o", "--output", type=str, help='file to write results to')
     parser.add_argument("path", type=str, help='Path to the file or directory to run DSTest on')
     args = parser.parse_args()
 
     run_modules(find_modules(args.path))
     print_result_cli()
 
-
-
+    if args.output:
+        print_result_file(args.output)

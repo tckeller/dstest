@@ -32,7 +32,7 @@ class DSResult:
 class ResultRegistry:
     _instance: Optional["ResultRegistry"] = None
     _current_experiment: Optional[DSResult] = None
-    experiment_results = []
+    _experiment_results = []
 
     def __new__(cls):
         """ The ResultRegistry is a Singleton """
@@ -45,7 +45,7 @@ class ResultRegistry:
         return self
 
     def end_experiment(self):
-        self.experiment_results.append(self._current_experiment)
+        self._experiment_results.append(self._current_experiment)
         self._current_experiment = None
 
     def __enter__(self):
@@ -79,6 +79,10 @@ class ResultRegistry:
 
     def all_parameter_names(self):
         return set().union(*[result.parameter_names() for result in self.experiment_results])
+
+    @property
+    def experiment_results(self):
+        return sorted(self._experiment_results, key=lambda x: (x.module_name, x.experiment_name))
 
 
 registry = ResultRegistry()
