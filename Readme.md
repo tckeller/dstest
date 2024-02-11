@@ -15,6 +15,7 @@ These are the features I currently want to implement
 - [X] Fixtures
   - [X] Basic dependency injection for fixtures
   - [X] Caching
+  - [ ] Fixture Testing
 - Experiment Results
   - [X] Result Registry
   - [X] Log Metrics
@@ -24,8 +25,8 @@ These are the features I currently want to implement
   - [X] Progress Bar
   - [X] Present Results in console
   - [X] Output Result in CSV File
-  - [ ] Output results into readable file (Markdown)
-    - [ ] Parse Docstrings
+  - [X] Output results into readable file (Markdown)
+    - [X] Parse Docstrings
     - [ ] Parse Code
   - [ ] Output results as Html
 - [ ] Advanced Features
