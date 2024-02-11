@@ -51,7 +51,7 @@ def run_experiments_in_module(experiments: List[Callable], module: str, progress
         arguments = experiment.__code__.co_varnames[:experiment.__code__.co_argcount]
         experiment_inputs = {arg: get_fixture(arg) for arg in arguments}
 
-        with registry.start_experiment(experiment.__name__, module_name=module):
+        with registry.start_experiment(experiment.__name__, module_name=module, docstring=experiment.__doc__):
             experiment(**experiment_inputs)
         progress_bar.advance(task, advance=1/(len(experiments)))
 

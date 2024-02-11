@@ -1,3 +1,4 @@
 numpy
 pytest
-rich
+rich==13.7.0
+mdutils==1.6.0

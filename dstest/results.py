@@ -3,10 +3,11 @@ from typing import Any, Dict, Optional
 
 class DSResult:
     """ This class holds the result """
-    def __init__(self, module_name: str = "", experiment_name: str=None):
+    def __init__(self, module_name: str = "", experiment_name: str = None, docstring: str = ""):
         self.parameters = {}
         self.metrics = {}
         self.figures = {}
+        self.docstring = docstring
         self.module_name = module_name
         self.experiment_name = experiment_name
 
@@ -40,8 +41,11 @@ class ResultRegistry:
             cls._instance = super(ResultRegistry, cls).__new__(cls)
         return cls._instance
 
-    def start_experiment(self, experiment_name: str, module_name: str = ""):
-        self._current_experiment: DSResult = DSResult(experiment_name=experiment_name, module_name=module_name)
+    def start_experiment(self, experiment_name: str, module_name: str = "", docstring: str = ""):
+        self._current_experiment: DSResult = DSResult(
+            experiment_name=experiment_name,
+            module_name=module_name,
+            docstring=docstring)
         return self
 
     def end_experiment(self):

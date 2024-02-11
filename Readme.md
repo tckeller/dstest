@@ -23,10 +23,13 @@ These are the features I currently want to implement
 - [ ] Output & Presentation
   - [X] Progress Bar
   - [X] Present Results in console
+  - [X] Output Result in CSV File
   - [ ] Output results into readable file (Markdown)
     - [ ] Parse Docstrings
     - [ ] Parse Code
   - [ ] Output results as Html
 - [ ] Advanced Features
+  - [ ] Make it possible to not rerun experiments and still see the results
+  - [ ] Interactive CLI interface which shows you which module were found and allows you tu run them individually. 
   - [ ] Pycharm Plugin
 - [ ] Documentation & Examples

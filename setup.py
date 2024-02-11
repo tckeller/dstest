@@ -8,5 +8,5 @@ setup(
     author_email='',
     description='A framework for data science experimentation by unit testing',
     packages=find_packages(),    
-    install_requires=["rich==13.7.0"],
+    install_requires=["rich==13.7.0", "mdutils==1.6.0"],
 )

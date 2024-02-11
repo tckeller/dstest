@@ -59,3 +59,7 @@ def print_result_file(file_path: str):
                 *map(lambda p: str(result.parameters.get(p, "")), parameters),
                 *map(lambda m: str(result.metrics.get(m, "")), metrics),
             ])
+
+
+def print_result_markdown(output_directory: str):
+    pass
